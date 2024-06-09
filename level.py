@@ -22,14 +22,13 @@ class Level:
 
     def create_map(self):
         layouts = {
-                'boundary': import_csv_layout('graphics/tilemap/Final Game Surface_NO_MOVE.csv'),
-                'grass': import_csv_layout('graphics/tilemap/Final Game Surface_Tile Layer 1.csv'),
-                'trees': import_csv_layout('graphics/tilemap/Final Game Surface_Tile Layer 1.csv')
+                'boundary': import_csv_layout('graphics/tilemap/MyMap_No Move.csv'),
+                'bush': import_csv_layout('graphics/tilemap/MyMap_BUSH.csv'),
+                'trees and bolders': import_csv_layout('graphics/tilemap/MyMap_TREES AND BOLDERS.csv')
         }
         graphics = {
             'trees': import_folder ('graphics/trees')
         }
-        print(graphics)
         
         for style,layout in layouts.items():
             for row_index, row in enumerate (layout):
@@ -45,7 +44,7 @@ class Level:
                             pass
 
                         
-        self.player = Player((4300,3200),[self.visible_sprites],self.obstacles_sprites, )
+        self.player = Player((500,600),[self.visible_sprites],self.obstacles_sprites, )
         
     def run(self):
         self.visible_sprites.custom_draw(self.player) #this draws from the custom draw and passes the player in so we can access it in custom_draw
@@ -65,7 +64,7 @@ class YSortCameraGroup(pygame.sprite.Group):
         self.offset = pygame.math.Vector2() #a vector is created, and is then added to the offset position
     
         #creating the map
-        self.floor_surface = pygame.image.load('graphics/tilemap/tileSurf.png').convert()
+        self.floor_surface = pygame.image.load('graphics/tilemap/MyMap.png').convert()
         self.floor_rect = self.floor_surface.get_rect(topleft = (0,0))
 
     def custom_draw(self,player):
