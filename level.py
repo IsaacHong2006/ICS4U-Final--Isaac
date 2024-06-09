@@ -7,7 +7,7 @@ from debug import debug
 from pytmx.util_pygame import load_pygame
 from supporting import *
 from random import choice
-
+from ui import *
 class Level:
     def __init__(self):
         #display surface
@@ -21,11 +21,15 @@ class Level:
         #setup for sprite
         self.create_map()
 
+        #user interface set up
+        self.ui = User_Interface()
+
     def create_map(self):
         layouts = {
                 'boundary': import_csv_layout('graphics/tilemap/MyMap_No Move.csv'),
                 'bush': import_csv_layout('graphics/tilemap/MyMap_BUSH.csv'),
-                'trees and bolders': import_csv_layout('graphics/tilemap/MyMap_TREES AND BOLDERS.csv')
+                'trees and bolders': import_csv_layout('graphics/tilemap/MyMap_TREES AND BOLDERS.csv'),
+                'entities' : import_csv_layout('graphics/tilemap/MyMap_Peeps.csv')
         }
         graphics = {
             'bushes': import_folder('graphics/bush'),
@@ -40,21 +44,29 @@ class Level:
                         y = row_index * TILESIZE
                         if style == 'boundary':
                             Tile((x,y), [self.obstacles_sprites], 'invisible')
+
                         if style == 'bush': #bush tiles
                             random_bush = choice(graphics['bushes'])
                             Tile((x,y), [self.visible_sprites, self.obstacles_sprites], 'bushes', random_bush)
+
                         if style == 'trees and bolders': #trees and bolders
                             surface = graphics['trees and bolders'][int(col)]
                             Tile((x ,y - 60), [self.visible_sprites, self.obstacles_sprites], 'trees and bolders', surface)
-                            pass
 
-                        
-        self.player = Player((500,600),[self.visible_sprites],self.obstacles_sprites, )
+                        if style == 'entities':
+                            if col == '172':
+                                self.player = Player(
+                                    (x,y),
+                                    [self.visible_sprites],
+                                    self.obstacles_sprites, )
+                            else:
+                                pass
+                                
         
     def run(self):
         self.visible_sprites.custom_draw(self.player) #this draws from the custom draw and passes the player in so we can access it in custom_draw
         self.visible_sprites.update()
-        debug(self.player.direction)
+        self.ui.display(self.player)
 
 class YSortCameraGroup(pygame.sprite.Group): 
     def __init__(self):

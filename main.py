@@ -3,11 +3,12 @@ from settings import *
 from debug import debug 
 from level import Level
 from player import Player
+from ui import *
 
 class Menu:
     def __init__(self, screen):
         self.screen = screen
-        self.font = pygame.font.Font(None, MENU_FONT_SIZE)
+        self.font = pygame.font.Font(UI_FONT, 64)
         self.options = MENU_OPTIONS
         self.selected_index = 0
         
@@ -23,7 +24,7 @@ class Menu:
             if i == self.selected_index:
                 color = (255, 0, 0)  # Red for the selected option
             else:
-                color = MENU_FONT_COLOR
+                color = 'purple'
             text_surface = self.font.render(option, True, color)
             x = self.screen.get_width() // 2 - text_surface.get_width() // 2
             y = self.screen.get_height() // 2 + i * MENU_FONT_SIZE
@@ -54,7 +55,7 @@ class Game:
         #setting up
         pygame.init()
         self.screen = pygame.display.set_mode((WIDTH, HEIGHT)) #For the screen size, and grabbed from settings
-        pygame.display.set_caption('Inevitability')
+        pygame.display.set_caption('Gamble or Hardwork?')
         self.clock = pygame.time.Clock() 
 
         self.level = Level()
