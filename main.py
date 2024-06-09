@@ -4,6 +4,7 @@ from debug import debug
 from level import Level
 from player import Player
 
+
 class Game:
     def __init__(self):
 
@@ -22,7 +23,8 @@ class Game:
                 if event.type == pygame.QUIT:
                     pygame.quit()
                     sys.exit()
-
+                # if event.key == pygame.K_ESCAPE:
+                #     pass
             self.screen.fill('black')
             self.level.run()
             pygame.display.update()

@@ -4,6 +4,8 @@ from settings import *
 from player import Player
 from tiles import Tile
 from debug import debug
+from pytmx.util_pygame import load_pygame
+from supporting import *
 
 class Level:
     def __init__(self):
@@ -19,14 +21,31 @@ class Level:
         self.create_map()
 
     def create_map(self):
-        for row_index, row in enumerate(WORLD_MAP):
-            for straight_index, straight in enumerate(row):
-                x = straight_index * TILESIZE
-                y = row_index * TILESIZE
-                if straight == 'x':
-                    Tile((x,y),[self.visible_sprites, self.obstacles_sprites])
-                if straight == 'p':
-                    self.player = Player((x,y),[self.visible_sprites],self.obstacles_sprites)
+        layouts = {
+                'boundary': import_csv_layout('graphics/tilemap/Final Game Surface_NO_MOVE.csv'),
+                'grass': import_csv_layout('graphics/tilemap/Final Game Surface_Tile Layer 1.csv'),
+                'trees': import_csv_layout('graphics/tilemap/Final Game Surface_Tile Layer 1.csv')
+        }
+        graphics = {
+            'trees': import_folder ('graphics/trees')
+        }
+        print(graphics)
+        
+        for style,layout in layouts.items():
+            for row_index, row in enumerate (layout):
+                for col_index, col in enumerate(row):
+                    if col != '-1':
+                        x = col_index * TILESIZE
+                        y = row_index * TILESIZE
+                        if style == 'boundary':
+                            Tile((x,y), [self.obstacles_sprites], 'invisible')
+                        if style == 'grass':
+                            pass
+                        if style == 'trees':
+                            pass
+
+                        
+        self.player = Player((4300,3200),[self.visible_sprites],self.obstacles_sprites, )
         
     def run(self):
         self.visible_sprites.custom_draw(self.player) #this draws from the custom draw and passes the player in so we can access it in custom_draw
@@ -59,6 +78,7 @@ class YSortCameraGroup(pygame.sprite.Group):
         #drawing the floor
         floor_offset_pos = self.floor_rect.topleft - self.offset
         self.draw_surface.blit(self.floor_surface, floor_offset_pos)
+
 
         # for sprite in self.sprites():
         for sprite in sorted(self.sprites(), key = lambda sprite: sprite.rect.centery):
