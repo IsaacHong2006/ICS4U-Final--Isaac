@@ -5,6 +5,11 @@ HEIGHT = 720
 FPS = 60
 TILESIZE = 32
 
+MENU_FONT_SIZE = 50
+MENU_FONT_COLOR = (255, 255, 255)  # White
+MENU_BG_COLOR = (0, 0, 0)  # Black
+MENU_OPTIONS = ['Start Game', 'Quit']
+
 WORLD_MAP = [
 ['x','x','x','x','x','x','x','x','x','x','x','x','x','x','x','x','x','x','x','x'],
 ['x',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','x'],
