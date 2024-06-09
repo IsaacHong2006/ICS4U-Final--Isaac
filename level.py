@@ -6,6 +6,7 @@ from tiles import Tile
 from debug import debug
 from pytmx.util_pygame import load_pygame
 from supporting import *
+from random import choice
 
 class Level:
     def __init__(self):
@@ -27,7 +28,8 @@ class Level:
                 'trees and bolders': import_csv_layout('graphics/tilemap/MyMap_TREES AND BOLDERS.csv')
         }
         graphics = {
-            'trees': import_folder ('graphics/trees')
+            'bushes': import_folder('graphics/bush'),
+            'trees and bolders': import_folder('graphics/treesandbolders')
         }
         
         for style,layout in layouts.items():
@@ -38,9 +40,12 @@ class Level:
                         y = row_index * TILESIZE
                         if style == 'boundary':
                             Tile((x,y), [self.obstacles_sprites], 'invisible')
-                        if style == 'grass':
-                            pass
-                        if style == 'trees':
+                        if style == 'bush': #bush tiles
+                            random_bush = choice(graphics['bushes'])
+                            Tile((x,y), [self.visible_sprites, self.obstacles_sprites], 'bushes', random_bush)
+                        if style == 'trees and bolders': #trees and bolders
+                            surface = graphics['trees and bolders'][int(col)]
+                            Tile((x ,y - 60), [self.visible_sprites, self.obstacles_sprites], 'trees and bolders', surface)
                             pass
 
                         
