@@ -8,4 +8,4 @@ Goal: I hoped to have created a fully functioning game with attack features for 
 Technology used:    
                     1. Pygame; cross-platform set of Python modules which allows for the writing of games.
                     2. Tiled; A 2D level editor which helps to develop certain features of the game. 
-                    3. 
+                    3. ChatGPT; for prompts, and assistance with certain parts of the code for debugging reasons.

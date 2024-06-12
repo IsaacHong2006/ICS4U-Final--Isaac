@@ -7,7 +7,9 @@ from debug import debug
 from pytmx.util_pygame import load_pygame
 from supporting import *
 from random import choice
+from random import choices
 from ui import *
+from enemy import *
 class Level:
     def __init__(self):
         #display surface
@@ -20,6 +22,10 @@ class Level:
 
         #setup for sprite
         self.create_map()
+
+        #attack sprites
+        self.attack_sprite = pygame.sprite.Group()
+        self.attackable_sprites = pygame.sprite.Group()
 
         #user interface set up
         self.ui = User_Interface()
@@ -56,16 +62,25 @@ class Level:
                         if style == 'entities':
                             if col == '172':
                                 self.player = Player(
-                                    (x,y),
+                                    (x,y), #position
                                     [self.visible_sprites],
                                     self.obstacles_sprites, )
+                            elif col == '1130':
+                                monster_list = ["slime", "blobby"]
+                                rng = [0.6, 0.4]
+                                monster_name = choices(monster_list, weights = rng, k = 1) [0]
+                                Enemy(monster_name,(x,y),[self.visible_sprites], self.obstacles_sprites)
                             else:
-                                pass
+                                Enemy('arch-angel',(x,y),[self.visible_sprites], self.obstacles_sprites)
                                 
+                                
+    def create_attack(self):
+        self.current_attack                           
         
     def run(self):
         self.visible_sprites.custom_draw(self.player) #this draws from the custom draw and passes the player in so we can access it in custom_draw
         self.visible_sprites.update()
+        self.visible_sprites.update_enemy(self.player)
         self.ui.display(self.player)
 
 class YSortCameraGroup(pygame.sprite.Group): 
@@ -100,3 +115,8 @@ class YSortCameraGroup(pygame.sprite.Group):
         for sprite in sorted(self.sprites(), key = lambda sprite: sprite.rect.centery):
             offset_pos = sprite.rect.topleft - self.offset #new position, which allows for the offset. 
             self.draw_surface.blit(sprite.image, offset_pos)
+
+    def update_enemy(self, player):
+        enemy_sprites = [sprite for sprite in self.sprites() if hasattr(sprite, 'sprite_type') and sprite.sprite_type == 'enemy']
+        for enemy in enemy_sprites:
+            enemy.enemy_update(player)

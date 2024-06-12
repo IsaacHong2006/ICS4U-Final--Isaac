@@ -25,7 +25,7 @@ class Player(Entity):
         self.stats = {'health': 50, 'energy': 20, 'attack' : 5, 'speed' : 2}
         self.health = self.stats['health']
         self.energy = self.stats['energy']
-        self.exp = 123
+        self.exp = 123000
         self.speed = self.stats['speed']
 
     def import_player_assets(self):
@@ -66,7 +66,7 @@ class Player(Entity):
             if keys[pygame.K_LSHIFT] and not self.attack:
                 self.attack = True
                 self.attack_time = pygame.time.get_ticks()
-                print('Attack')
+                
                 
 
 
@@ -74,7 +74,6 @@ class Player(Entity):
             if keys[pygame.K_LCTRL] and not self.attack:
                 self.attack = True
                 self.attack_time = pygame.time.get_ticks()
-                print('Magic')
 
     def status_get(self):
 
@@ -102,6 +101,10 @@ class Player(Entity):
         if self.attack:
             if currently - self.attack_time >= self.attack_cooldown:
                 self.attack = False
+
+    def attack(self, targ): 
+        if pygame.sprite.collide_rect(self, targ):
+            self.dealing_dmg(targ)
 
     def animate(self):
         animations = self.animations[self.status]

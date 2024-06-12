@@ -30,7 +30,9 @@ MENU_BG_COLOR = (0, 0, 0)  # Black
 MENU_OPTIONS = ['Start Game', 'Quit']
 
 # enemy
-thingymabobs ={
-    
+thingymabobs={
+    'arch-angel': {'health': 100000, 'exp': 25000, 'damage': 2500, 'attack_type': 'Echos of the heavens', 'speed': 10, 'resistance': 50, 'attack_radius': 80, 'notice_radius': 250},
+    'blobby': {'health': 250, 'exp': 125, 'damage': 80, 'attack_type': 'Blobs', 'speed': 4, 'resistance': 10, 'attack_radius': 20, 'notice_radius': 60}, 
+    'slime': {'health': 10, 'exp': 10, 'damage': 5, 'attack_type': 'Sticky', 'speed': 2, 'resistance': 0, 'attack_radius': 10, 'notice_radius': 20}
 }
 
