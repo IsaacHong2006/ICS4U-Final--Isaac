@@ -4,7 +4,7 @@ from entity import Entity
 from supporting import *
 
 class Enemy(Entity):
-    def __init__(self,monster_name,pos,groups,obstacles_sprites):
+    def __init__(self,monster_name,pos,groups,obstacles_sprites,damageParameter, xp_add):
         
         #inheretance for setup
         super().__init__(groups)
@@ -35,7 +35,14 @@ class Enemy(Entity):
         self.can_attack = True
         self.attacking_time = 0
         self.cooldown_attack = 1000
+        self.damage_player = damageParameter
+        self.xp_add = xp_add
 
+
+        self.inflicted = True
+        self.hit_time = 0
+        self.inflictedTime = 450
+        
     def import_graphics(self,name):
         self.animations = {'idle': [],
                            'move': [],
@@ -71,13 +78,12 @@ class Enemy(Entity):
             self.status = 'idle'
 
     def actions(self, player):
-        if self.status == 'attack':
+        if self.status == 'attack' and self.can_attack:
             self.attacking_time = pygame.time.get_ticks()
-            print('attacking')
+            self.damage_player(self.attack_damage)
 
         elif self.status == 'move':
             self.direction = self.get_player_distance_with_direction(player)[1]
-
 
         else:
             self.direction = pygame.math.Vector2()
@@ -101,14 +107,21 @@ class Enemy(Entity):
             if current_time - self.attacking_time >= self.cooldown_attack:
                 self.can_attack = True
 
-    def attack(self, targ): 
-        if pygame.sprite.collide_rect(self, targ):
-            self.dealing_dmg(targ)
+    def get_damage(self,player):
+        if self.inflicted:
+            self.health -= player.attack_damage
+            self.hit_time = pygame.time.get_ticks
+
+    def deathNo(self):
+        if self.health < 0:
+            self.kill()
+            self.xp_add(self.exp)
 
     def update(self):
         self.move(self.speed) 
         self.animating()
         self.cooldown_time()
+        self.deathNo()
 
     def enemy_update(self, player):
         self.get_status(player)

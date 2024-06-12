@@ -10,8 +10,7 @@ class User_Interface:
 
         #bars 
         self.health_bar_rec = pygame.Rect(10, 10, HEALTH_BAR_WIDTH, BAR_TALL)
-        self.enrgy_bar_rec = pygame.Rect(10, 30, ENERGY_BAR_WIDTH, BAR_TALL)
-
+        
     def show_bar(self,current,max_amt,bg_rect,colour):
         #draw bg
         pygame.draw.rect(self.display_surface,UI_BG_COLOUR,bg_rect)
@@ -38,6 +37,5 @@ class User_Interface:
 
     def display(self,player):
         self.show_bar(player.health,player.stats['health'],self.health_bar_rec,HEALTH_COLOUR)
-        self.show_bar(player.energy,player.stats['energy'],self.enrgy_bar_rec,ENRGY_COLOUR)
 
         self.show_exp(player.exp)

@@ -7,8 +7,6 @@ class Entity(pygame.sprite.Sprite):
         self.animation_speed = 0.10
         self.direction = pygame.math.Vector2()
 
-
-
     def move(self, speed):
         if self.direction.magnitude() != 0:
             self.direction = self.direction.normalize()
@@ -35,11 +33,6 @@ class Entity(pygame.sprite.Sprite):
                         self.hitbox.bottom = sprite.hitbox.top
                     if self.direction.y < 0: #when moving up
                         self.hitbox.top = sprite.hitbox.bottom
-
-    def taking_dmg(self, damage):
-        self.health -= damage
-        if self.health  <= 0:
-            self.kill()
 
     def dealing_dmg(self, other_entity):
         other_entity.taking_dmg(self.damage)

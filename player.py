@@ -4,7 +4,7 @@ from supporting import import_folder
 from entity import Entity
 
 class Player(Entity):
-    def __init__(self, pos, groups, obstacles_sprites):
+    def __init__(self, pos, groups, obstacles_sprites,create_attack,destroy_attack):
         super().__init__(groups)
         self.image = pygame.image.load('graphics/egg.png').convert_alpha()
         self.rect = self.image.get_rect(topleft = pos)
@@ -19,14 +19,24 @@ class Player(Entity):
         self.attack = False
         self.attack_cooldown = 400
         self.attack_time = None
+        self.create_attack = create_attack
+        self.destroy_attack = destroy_attack
         self.obstacles_sprites = obstacles_sprites
 
         #statistics of player
-        self.stats = {'health': 50, 'energy': 20, 'attack' : 5, 'speed' : 2}
+        self.stats = {'health': 50, 'attack' : 5, 'speed' : 2}
+        self.max_stats = {'health': 100000, 'attack' : 5000, 'speed' : 7}
+        self.upgrade_costs = {'health': 50, 'attack' : 50, 'speed' : 50}
+        self.attack_damage = self.stats['attack']
         self.health = self.stats['health']
-        self.energy = self.stats['energy']
-        self.exp = 123000
+        self.exp = 300000
         self.speed = self.stats['speed']
+
+
+        #damage timer
+        self.vulnerable = True
+        self.hurt_time = None
+        self.invulnerable = 500
 
     def import_player_assets(self):
         character_path = 'graphics/playeranimations/'
@@ -66,14 +76,7 @@ class Player(Entity):
             if keys[pygame.K_LSHIFT] and not self.attack:
                 self.attack = True
                 self.attack_time = pygame.time.get_ticks()
-                
-                
-
-
-            #Magic Inputs
-            if keys[pygame.K_LCTRL] and not self.attack:
-                self.attack = True
-                self.attack_time = pygame.time.get_ticks()
+                self.create_attack()
 
     def status_get(self):
 
@@ -101,10 +104,11 @@ class Player(Entity):
         if self.attack:
             if currently - self.attack_time >= self.attack_cooldown:
                 self.attack = False
-
-    def attack(self, targ): 
-        if pygame.sprite.collide_rect(self, targ):
-            self.dealing_dmg(targ)
+                self.destroy_attack
+        
+        if not self.vulnerable:
+            if currently - self.hurt_time >= self.invulnerable:
+                self.vulnerable = True
 
     def animate(self):
         animations = self.animations[self.status]
@@ -118,9 +122,15 @@ class Player(Entity):
         self.image = animations[int(self.frame_index)]
         self.rect = self.image.get_rect(center = self.hitbox.center)
 
+    def get_value_by_index(self,index):
+        return list(self.stats.values())[index]
+
+    def get_cost_by_index(self,index):
+        return list(self.upgrade_costs.values())[index]
+
     def update(self):
         self.input()
         self.cooldowns()
         self.status_get()
         self.animate()
-        self.move(self.speed)
+        self.move(self.stats['speed'])

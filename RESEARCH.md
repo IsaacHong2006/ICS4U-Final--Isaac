@@ -9,3 +9,11 @@ Reason: Understanding, and learning how to used Tiled to make a game-map. Video 
 Video: Creating a Mario style level in Python / Pygame with a visual level editor [Tiled]
 Source: https://www.youtube.com/watch?v=wJMDh9QGRgs
 Reason: Specific portion of the video speaks to using tiled as well, to create a level. 
+
+ChatGPT Prompt: How to implement a menu into a game in python. The requirements and a mini sample code. 
+
+ChatGPT Prompt: How to implement an exit menu system?
+
+ChatGPT Prompt: How do I use a sprite sheet?
+
+ChatGPT Prompt: How do I implement an interactable sprite?
