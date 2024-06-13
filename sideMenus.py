@@ -40,7 +40,7 @@ class Upgrade:
             if keys[pygame.K_SPACE]:
                 self.can_move = False
                 self.selection_time = pygame.time.get_ticks()
-                self.item_list[self.selection_index].trigger(self)
+                self.item_list[self.selection_index].trigger(self.player)
 
     def selection_cooldown(self):
         if not self.can_move:
@@ -121,11 +121,14 @@ class Item:
         if player.exp >= player.upgrade_costs[upgrade_att] and player.stats[upgrade_att] < player.max_stats[upgrade_att]:
             player.exp -= player.upgrade_costs[upgrade_att]
             player.stats[upgrade_att] *= 1.2
+            player.stats[upgrade_att] = round(player.stats[upgrade_att])
             player.upgrade_costs[upgrade_att] *= 1.4
+
+            if upgrade_att == 'health':
+                player.health = player.stats[upgrade_att]
 
         if player.stats[upgrade_att] > player.max_stats[upgrade_att]:
             player.stats[upgrade_att] = player.max_stats[upgrade_att]
-        
 
     def display(self,surface,selection_num,name,value,max_val,cost):
         if self.index == selection_num:
